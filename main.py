@@ -15,8 +15,8 @@ Ly = 1
 dx = Lx/nx
 dy = Ly/ny
 
-#Temp Values 
-T_top = 50 
+# Temp Values
+T_top = 50
 T_bottom = 20
 T_inf = 30
 
@@ -26,17 +26,15 @@ h = 2000
 T0 = np.ones(nx*ny, dtype=np.float64)*20
 b = np.zeros_like(T0)
 
-A = np.zeros((nx*ny,nx*ny), dtype = np.float64)
+A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
 
-#Assign nodes (FROM PROFESSORS NOTES)
+# Assign nodes (FROM PROFESSORS NOTES)
 
 for m in range(nx):  # Loop over the nodes in x direction
     for n in range(ny):  # Loop over the nodes in the y direction
         # print(m,n)
         index = m + n*ny  # This is the rule for how a node gets labeled in A, T, or C matrix
-
-
 
         if (m >= 1) and (m <= nx-2) and (n >= 1) and (n <= ny-2):  # Interior node rule…
             # print('This is an interior node')
@@ -49,10 +47,10 @@ for m in range(nx):  # Loop over the nodes in x direction
 # Note that there are no terms on the RHS for Rule 1, so you don’t have to change anything in [C].
 
         if (n == ny-1):
-            #print('Top node')
+            # print('Top node')
             A[index, index] = 1
             b[index, index] = T_top
-            
+
          if (n == 0):
             #print('Bottom node')
             A[index, index] = 1
