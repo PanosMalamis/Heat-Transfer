@@ -1,83 +1,161 @@
-# Panos Malamis
-# 4/6/2023
-# ME 321 - Heat Transfer
-
-
 import numpy as np
 import matplotlib.pyplot as plt
+import time as t
 
+#-------- VARIABLES --------#
 nx = 20
 ny = 20
-
-Lx = 1
-Ly = 1
-
+Lx = Ly = 1
 dx = Lx/nx
 dy = Ly/ny
 
-# Temp Values
-T_top = 50
-T_bottom = 20
-T_inf = 30
+#---------- MAIN ----------#
 
-k = 60
-h = 2000
+print("Hello, and welcome to our Heat Transfer Project!")
+t.sleep(2)
+print("This Program should be able to solve most problems...")
+t.sleep(2)
+print("but for your convenience, please select a case study.")
+t.sleep(2)
 
-T0 = np.ones(nx*ny, dtype=np.float64)*20
-b = np.zeros_like(T0)
+user_input = input(
+    " \nSelect either 1 , 2 , or 3.\nEnter '4' for your custom values\n \nEnter your choice: ")
+# User input above switches and displays the tables that you ask for.
 
-A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
+if int(user_input) == 1:  # CASE 1
+
+    T_top = 50  # side 2
+    T_bot = 20  # side 4
+    T_inf = 30  # side 3
+
+    k = 60  # conduction constant
+    h = 100  # convection constant
+
+    T0 = np.ones(nx*ny, dtype=np.float64)*20
+    b = np.zeros_like(T0)
+    A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
 
-# Assign nodes (FROM PROFESSORS NOTES)
+if int(user_input) == 2:  # CASE 2
 
-for m in range(nx):  # Loop over the nodes in x direction
-    for n in range(ny):  # Loop over the nodes in the y direction
-        # print(m,n)
-        index = m + n*ny  # This is the rule for how a node gets labeled in A, T, or C matrix
+    T_top = 50
+    T_bot = 20
+    T_inf = 30
 
-        if (m >= 1) and (m <= nx-2) and (n >= 1) and (n <= ny-2):  # Interior node rule…
-            # print('This is an interior node')
-            # Follow Rule 1 for Table 4.2 (Eq. 4.29)
-            A[index, index] = -4  # Set the A[m,n] to -4
-            A[index, index+1] = 1  # Set the A[m+1,n] to 1
-            A[index, index-1] = 1  # Set the A[m-1,n] to 1
-            A[index, index-ny] = 1  # Set the A[m,n-1] to 1
-            A[index, index+ny] = 1  # Set the A[m,n+1] to 1
-# Note that there are no terms on the RHS for Rule 1, so you don’t have to change anything in [C].
+    k = 60
+    h = 0.6
 
-        if (n == ny-1):
-            # print('Top node')
-            A[index, index] = 1
-            b[index, index] = T_top
+    T0 = np.ones(nx*ny, dtype=np.float64)*20
+    b = np.zeros_like(T0)
+    A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
-         if (n == 0):
-            #print('Bottom node')
-            A[index, index] = 1
-            b[index, index] = T_bottom
-        
-        if (m == 1) and (n >= 1) and (n <= ny-2):  # Interior node rule…
-            # print('left node')
-            A[index, index] = -4  # Set the A[m,n] to -4
-            A[index, index+1] = 1  # Set the A[m+1,n] to 1
-            A[index, index-1] = 1  # Set the A[m-1,n] to 1
-            A[index, index-ny] = 1  # Set the A[m,n-1] to 1
-            A[index, index+ny] = 1  # Set the A[m,n+1] to 1
 
-#Gauss-Seidel Solver
+if int(user_input) == 3:  # CASE 3
+
+    T_top = 50
+    T_bot = 20
+    T_inf = 50
+
+    k = 60
+    h = 1
+
+    T0 = np.ones(nx*ny, dtype=np.float64)*20
+    b = np.zeros_like(T0)
+    A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
+
+
+#--------------CHANGE THE CODE BELOW FOR CUSTOM RESULTS ----------------------#
+if int(user_input) == 4:
+
+    T_top = 50  # side 2
+    T_bot = 20  # side 4
+    T_inf = 30  # side 3
+
+    k = 60  # conduction constant
+    h = 100  # convection constant
+
+    T0 = np.ones(nx*ny, dtype=np.float64)*20
+    b = np.zeros_like(T0)
+    A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
+
+#--------------------------------------------------------------------------------#
+
+"""From Professors Rubric"""
+
+for i in range(nx):
+    for j in range(ny):
+        # print (i,j)
+        index = i + j*ny
+
+        if (i >= 1) and (i <= nx-2) and (j >= 1) and (j <= ny-2):
+            # print ('interior node')
+            A[index, index] = -4  # (i, j)
+            A[index, index+1] = 1  # (i+1, j)
+            A[index, index-1] = 1  # (i-1, j)
+            A[index, index+ny] = 1  # (i, j+1)
+            A[index, index-ny] = 1  # (i, j-1)
+
+        if (j == ny-1):
+            # print ('top node')
+            A[index, index] = 1  # (i, j)
+            b[index] = T_top  # (i, j)
+
+        if (j == 0):
+            # print ('bottom node')
+            A[index, index] = 1  # (i, j)
+            b[index] = T_bot
+
+        if (i == 0) and (j >= 1) and (j <= ny-2):
+            # print ('left node')
+            A[index, index] = -4  # (i, j)
+            A[index, index+1] = 2  # (i+1, j)
+            A[index, index+ny] = 1  # (i, j+1)
+            A[index, index-ny] = 1  # (i, j-1)
+
+        if (i == nx-1) and (j >= 1) and (j <= ny-2):
+            # print ('right node')
+            A[index, index] = -2 * (h * dx/k + 2)  # (i, j)
+            A[index, index-1] = 2  # (i-1, j)
+            A[index, index+ny] = 1  # (i, j+1)
+            A[index, index-ny] = 1  # (i, j-1)
+            b[index] = -2 * h * dx/k * T_inf  # (i, j)
 
 
 def gauss_seidel(A, b, x0, epsilon, max_iterations):
+    """This function will solve the system of linear equations using the Gauss Seidel method. From the Professors Rubric."""
     n = len(A)
     x = x0.copy()
- # Gauss-Seidal Method [By Bottom Science]
- for i in range(max_iterations):
-    x_new = np.zeros(n)
-    for j in range(n):
-        s1 = np.dot(A[j, :j], x_new[:j])
-        s2 = np.dot(A[j, j + 1:], x[j + 1:])
-        x_new[j] = (b[j] - s1 - s2) / A[j, j]
- if np.allclose(x, x_new, rtol=epsilon):
-        return x_new
-    x = x_new
-        return x
+
+    # gauss-seidal method (by bottom science)
+
+    for i in range(max_iterations):
+        x_new = np.zeros(n)
+        for j in range(n):
+            s1 = np.dot(A[j, :j], x_new[:j])
+            s2 = np.dot(A[j, j+1:], x[j+1:])
+            x_new[j] = (b[j] - s1 - s2) / A[j, j]
+        if np.allclose(x, x_new, rtol=epsilon):
+            return x_new
+        x = x_new
+    return x
+
+
+def unwrap(theta, nx, ny):
+    T = np.zeros((nx, ny), dtype=np.float64)
+    for i in range(nx):
+        for j in range(ny):
+            T[i, j] = theta[i + j*ny]
+    return np.transpose(T)
+
+
+x = gauss_seidel(A, b, T0, 0.0001, 1000)
+
+T = unwrap(x, nx, ny)
+fig, ax = plt.subplots()
+CS = ax.contour(T)
+ax.clabel(CS, inline=True, fontsize=10)
+
+print("\n   Loading Graph now, Please wait...")
+t.sleep(2)
+
+plt.show()
