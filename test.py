@@ -35,6 +35,8 @@ if int(user_input) == 1:  # CASE 1
     b = np.zeros_like(T0)
     A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
+    cases = "Case 1"
+
 
 if int(user_input) == 2:  # CASE 2
 
@@ -157,5 +159,5 @@ ax.clabel(CS, inline=True, fontsize=10)
 
 print("\n   Loading Graph now, Please wait...")
 t.sleep(2)
-
+ax.set_title("Temperture Gradiant " + cases)
 plt.show()
