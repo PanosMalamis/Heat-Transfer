@@ -19,7 +19,7 @@ print("but for your convenience, please select a case study.")
 t.sleep(2)
 
 user_input = input(
-    " \nSelect either 1 , 2 , or 3.\nEnter '4' for your custom values\n \nEnter your choice: ")
+    "\nSelect either 1 , 2 , or 3.\nEnter '4' for your custom values\n \nEnter your choice: ")
 # User input above switches and displays the tables that you ask for.
 
 if int(user_input) == 1:  # CASE 1
