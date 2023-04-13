@@ -2,14 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time as t
 
-#-------- VARIABLES --------#
+# -------- VARIABLES --------#
 nx = 20
 ny = 20
 Lx = Ly = 1
 dx = Lx/nx
 dy = Ly/ny
 
-#---------- MAIN ----------#
+# ---------- MAIN ----------#
 
 print("Hello, and welcome to our Heat Transfer Project!")
 t.sleep(2)
@@ -64,7 +64,7 @@ if int(user_input) == 3:  # CASE 3
     A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
 
-#--------------CHANGE THE CODE BELOW FOR CUSTOM RESULTS ----------------------#
+# --------------CHANGE THE CODE BELOW FOR CUSTOM RESULTS ----------------------#
 if int(user_input) == 4:
 
     T_top = 50  # side 2
@@ -78,7 +78,7 @@ if int(user_input) == 4:
     b = np.zeros_like(T0)
     A = np.zeros((nx*ny, nx*ny), dtype=np.float64)
 
-#--------------------------------------------------------------------------------#
+# --------------------------------------------------------------------------------#
 
 """From Professors Rubric"""
 
